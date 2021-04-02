@@ -20,7 +20,7 @@ namespace <#namespace#>.Api.Controllers
         private readonly IStorage _storage;
         private readonly ConfigSettingsBase _configSettingsBase;
 
-        public DownloadController(ILoggerFactory logger, IHostingEnvironment env,IOptions<ConfigSettingsBase> configSettingsBase, IStorage storage)
+        public DownloadController(ILoggerFactory logger, IWebHostEnvironment env,IOptions<ConfigSettingsBase> configSettingsBase, IStorage storage)
         {
             this._logger = logger.CreateLogger<DownloadController>();
             this._env = env;

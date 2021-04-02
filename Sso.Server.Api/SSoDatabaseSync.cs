@@ -1,12 +1,10 @@
 ﻿using Common.Domain.Base;
 using Common.Domain.Interfaces;
 using IdentityServer4.EntityFramework.DbContexts;
-using IdentityServer4.EntityFramework.Mappers;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
-using System.Linq;
 
 
 namespace Sso.Server.Api
@@ -15,8 +13,8 @@ namespace Sso.Server.Api
     {
         public static void InitializeDatabase(IApplicationBuilder app,
             ConfigSettingsBase settings, 
-            ICache cache, 
-            IHostingEnvironment env)
+            ICache cache,
+            IWebHostEnvironment env)
         {
             using (var serviceScope = app.ApplicationServices.GetService<IServiceScopeFactory>().CreateScope())
             {
@@ -29,7 +27,7 @@ namespace Sso.Server.Api
             }
         }
 
-        public static void Update(ConfigSettingsBase settings, ICache cache, IHostingEnvironment env, ConfigurationDbContext context)
+        public static void Update(ConfigSettingsBase settings, ICache cache, IWebHostEnvironment env, ConfigurationDbContext context)
         {
             
             //foreach (var client in Config.GetClients(settings))

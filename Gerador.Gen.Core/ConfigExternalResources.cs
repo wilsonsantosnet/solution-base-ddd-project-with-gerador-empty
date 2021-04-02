@@ -32,34 +32,6 @@ namespace Seed.Gen
 
         }
 
-        private ExternalResource ConfigExternarResourcesTemplatesBackDDD(bool replaceLocalFilesApplication)
-        {
-
-            return new ExternalResource
-            {
-                ReplaceLocalFilesApplication = true,
-                ResouceRepositoryName = "template-gerador-back-DDD",
-                ResourceUrlRepository = "https://github.com/wilsonsantosnet/template-gerador-back-DDD.git",
-                ResourceLocalPathFolderExecuteCloning = HelperUri.CombineAbsoluteUri(this._basicPathProject, @"Outros\Repositorios"),
-                ResourceLocalPathDestinationFolrderApplication = HelperUri.CombineAbsoluteUri(this._basicPathProject, @"solution-base-core2.0-ddd-project-with-gerador-empty\Gerador.Gen.Core\Templates\Back"),
-            };
-
-        }
-
-        private ExternalResource ConfigExternarResourcesFrameworkCommon(bool replaceLocalFilesApplication)
-        {
-
-            return new ExternalResource
-            {
-                ReplaceLocalFilesApplication = true,
-                OnlyFoldersContainsThisName = "Common",
-                ResouceRepositoryName = "framework-core-common",
-                ResourceUrlRepository = "https://github.com/wilsonsantosnet/framework-core-common.git",
-                ResourceLocalPathFolderExecuteCloning = HelperUri.CombineAbsoluteUri(this._basicPathProject, @"Outros\Repositorios"),
-                ResourceLocalPathDestinationFolrderApplication = HelperUri.CombineAbsoluteUri(this._basicPathProject, @"solution-base-core2.0-ddd-project-with-gerador-empty\"),
-            };
-
-        }
 
         private ExternalResource ConfigExternarResourcesFrameworkCommon20(bool replaceLocalFilesApplication)
         {

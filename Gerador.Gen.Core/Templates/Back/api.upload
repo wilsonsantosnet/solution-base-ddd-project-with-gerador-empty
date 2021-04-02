@@ -26,7 +26,7 @@ namespace <#namespace#>.Api.Controllers
         private readonly ConfigSettingsBase _configSettingsBase;
         private readonly IStorage _storage;
 
-        public UplaodController(ILoggerFactory logger, IHostingEnvironment env, IOptions<ConfigSettingsBase> configSettingsBase, IStorage storage)
+        public UplaodController(ILoggerFactory logger, IWebHostEnvironment env, IOptions<ConfigSettingsBase> configSettingsBase, IStorage storage)
         {
             this._logger = logger.CreateLogger<UplaodController>();
             this._env = env;

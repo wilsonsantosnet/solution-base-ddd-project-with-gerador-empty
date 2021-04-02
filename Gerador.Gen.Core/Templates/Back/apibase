@@ -22,7 +22,7 @@ namespace <#namespace#>.Api.Controllers
 		private readonly ILogger _logger;
 		private readonly IHostingEnvironment _env;
       
-        public <#className#>ControllerBase(I<#className#>ApplicationService app, ILoggerFactory logger, IHostingEnvironment env)
+        public <#className#>ControllerBase(I<#className#>ApplicationService app, ILoggerFactory logger, IWebHostEnvironment env)
         {
             this._app = app;
 			this._logger = logger.CreateLogger<<#className#>Controller>();

@@ -21,7 +21,7 @@ namespace <#namespace#>.Api.Controllers
         private readonly IHostingEnvironment _env;
         private readonly string _uploadRoot;
 
-        public UplaodBase64Controller(ILoggerFactory logger, IHostingEnvironment env)
+        public UplaodBase64Controller(ILoggerFactory logger, IWebHostEnvironment env)
         {
             this._logger = logger.CreateLogger<UplaodBase64Controller>();
             this._env = env;
