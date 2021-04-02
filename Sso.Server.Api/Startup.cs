@@ -45,12 +45,12 @@ namespace Sso.Server.Api
                 .GetSection("ConfigConnectionString:Default").Value;
 
 
-            services.AddIdentityServer(optionsConfig())
-                .AddSigningCredential(GetRSAParameters())
-                .AddCustomTokenRequestValidator<ClientCredentialRequestValidator>()
-                .AddInMemoryApiResources(Config.GetApiResources())
-                .AddInMemoryIdentityResources(Config.GetIdentityResources())
-                .AddInMemoryClients(Config.GetClients(Configuration.GetSection("ConfigSettings").Get<ConfigSettingsBase>()));
+            services.AddIdentityServer(optionsConfig());
+                //.AddSigningCredential(GetRSAParameters())
+                //.AddCustomTokenRequestValidator<ClientCredentialRequestValidator>()
+                //.AddInMemoryApiResources(Config.GetApiResources())
+                //.AddInMemoryIdentityResources(Config.GetIdentityResources())
+                //.AddInMemoryClients(Config.GetClients(Configuration.GetSection("ConfigSettings").Get<ConfigSettingsBase>()));
 
             //Configurations
             services.Configure<ConfigSettingsBase>(Configuration.GetSection("ConfigSettings"));
