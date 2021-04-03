@@ -1,13 +1,11 @@
-﻿using Common.Domain.Base;
+using Common.Domain.Base;
 using IdentityModel;
 using IdentityServer4.Models;
-using Newtonsoft.Json;
 using Sso.Server.Api.Model;
-using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Security.Claims;
 using static IdentityServer4.IdentityServerConstants;
-using System.Linq;
 
 namespace Sso.Server.Api
 {
@@ -30,7 +28,7 @@ namespace Sso.Server.Api
             {
                 new Claim(JwtClaimTypes.Name, name),
                 new Claim(JwtClaimTypes.Email, email),
-                new Claim("role", JsonConvert.SerializeObject(new List<string> {"admin"})),
+                new Claim("role", System.Text.Json.JsonSerializer.Serialize(new List<string> {"admin"})),
                 new Claim("typerole", "admin"),
             };
         }
@@ -41,7 +39,7 @@ namespace Sso.Server.Api
             {
                 new Claim(JwtClaimTypes.Name, name),
                 new Claim(JwtClaimTypes.Email, email),
-                new Claim("role", JsonConvert.SerializeObject(new List<string> {"tenant"})),
+                new Claim("role", System.Text.Json.JsonSerializer.Serialize(new List<string> {"tenant"})),
                 new Claim("typerole", "tenant"),
             };
         }
@@ -81,7 +79,7 @@ namespace Sso.Server.Api
             {
                 new Client
                 {
-                    ClientId = "<#namespace#>",
+                    ClientId = "Seed",
                     AllowedGrantTypes = GrantTypes.ResourceOwnerPassword,
                     ClientSecrets =
                     {
@@ -98,7 +96,7 @@ namespace Sso.Server.Api
 
 				new Client
                 {
-                    ClientId = "<#namespace#>-spa",
+                    ClientId = "Seed-spa",
                     ClientSecrets = { new Secret("segredo".Sha256()) },
 
                     AllowedGrantTypes = GrantTypes.Implicit,
@@ -120,7 +118,7 @@ namespace Sso.Server.Api
                 },
                 new Client
                 {
-                    ClientId = "<#namespace#>-spa-custom",
+                    ClientId = "Seed-spa-custom",
                     ClientSecrets = { new Secret("segredo".Sha256()) },
 
                     AllowedGrantTypes = GrantTypes.Implicit,
@@ -198,7 +196,7 @@ namespace Sso.Server.Api
                 },
 				new Client
                 {
-                    ClientId = "<#namespace#>-spa-anonymous",
+                    ClientId = "Seed-spa-anonymous",
                     AllowedGrantTypes = GrantTypes.ClientCredentials,
                     ClientSecrets = {
                         new Secret("4aa288ca-1603-45c2-85c3-b41a08d2bd0a".Sha256())
