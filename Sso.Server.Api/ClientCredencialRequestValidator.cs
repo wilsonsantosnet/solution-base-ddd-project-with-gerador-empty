@@ -1,6 +1,5 @@
 ﻿using IdentityServer4.Validation;
 using Microsoft.AspNetCore.Http;
-using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
@@ -19,7 +18,7 @@ namespace Sso.Server.Api
         public async Task ValidateAsync(CustomTokenRequestValidationContext context)
         {
             var client = context.Result.ValidatedRequest.Client;
-            var _roles = JsonConvert.SerializeObject(new List<string> { "anonymous" });
+            var _roles = System.Text.Json.JsonSerializer.Serialize(new List<string> { "anonymous" });
 
             var claims = new List<Claim> {
                 new Claim("role", _roles),

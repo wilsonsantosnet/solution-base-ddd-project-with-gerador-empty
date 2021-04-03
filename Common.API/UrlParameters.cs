@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Collections.Specialized;
-using Newtonsoft.Json;
+﻿using System.Collections.Specialized;
 
 namespace Common.Api
 {
@@ -40,7 +34,7 @@ namespace Common.Api
 
         public QueryStringParameter AddToType<T>(string name, T value) where T : class
         {
-            return this.Add(name, JsonConvert.SerializeObject(value, Formatting.None));
+            return this.Add(name, System.Text.Json.JsonSerializer.Serialize(value));
         }
 
 

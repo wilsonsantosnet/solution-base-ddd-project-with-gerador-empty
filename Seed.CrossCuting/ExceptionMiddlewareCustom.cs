@@ -3,8 +3,6 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Serialization;
 using System;
 
 namespace Seed.CrossCuting
@@ -26,10 +24,7 @@ namespace Seed.CrossCuting
                         context.Response.Headers.Add("Access-Control-Allow-Origin", "*");
 
                         logger.LogError(exception.Message);
-                        await context.Response.WriteAsync(JsonConvert.SerializeObject(exception.ObjectResult.Value, new JsonSerializerSettings
-                        {
-                            ContractResolver = new CamelCasePropertyNamesContractResolver()
-                        }), System.Text.Encoding.UTF8);
+                        await context.Response.WriteAsync(System.Text.Json.JsonSerializer.Serialize(exception.ObjectResult.Value), System.Text.Encoding.UTF8);
                     }
                     catch(Exception ex) {
                         logger.LogError(ex.Message);

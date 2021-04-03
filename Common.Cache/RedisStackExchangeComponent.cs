@@ -2,7 +2,6 @@ using Common.Domain.Base;
 using Common.Domain.Interfaces;
 using Common.Domain.Serialization;
 using Microsoft.Extensions.Options;
-using Newtonsoft.Json;
 using StackExchange.Redis;
 using System;
 using System.Text;
@@ -177,7 +176,7 @@ namespace Common.Cache
                 return default(T);
 
             string resultJson = Encoding.UTF8.GetString(value);
-            var resultObject = JsonConvert.DeserializeObject<T>(resultJson);
+            var resultObject = System.Text.Json.JsonSerializer.Deserialize<T>(resultJson);
             return resultObject;
         }
 

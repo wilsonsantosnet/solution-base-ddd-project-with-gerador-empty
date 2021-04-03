@@ -1,10 +1,8 @@
 ﻿using Common.API.Extensions;
 using Common.Domain.Enums;
 using Common.Domain.Model;
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Security.Claims;
 
 namespace Seed.CrossCuting
@@ -36,7 +34,8 @@ namespace Seed.CrossCuting
         public static IDictionary<string, object> Define(CurrentUser user)
         {
             var _claims = user.GetClaims();
-            var roles = JsonConvert.DeserializeObject<IEnumerable<string>>(user.GetRole());
+
+            var roles = user.GetRole().IsNotNullOrEmpty()? System.Text.Json.JsonSerializer.Deserialize<IEnumerable<string>>(user.GetRole()) : new List<string>();
             var typeTole = user.GetTypeRole();
 
             if (typeTole.ToLower() == ETypeRole.Admin.ToString().ToLower())
@@ -56,7 +55,7 @@ namespace Seed.CrossCuting
                 new Tool { Icon = "fa fa-edit", Name = "Sample", Route = "/sample", Key = "Sample" , Type = ETypeTools.Menu },
 
             };
-            var _toolsForAdmin = JsonConvert.SerializeObject(tools);
+            var _toolsForAdmin = System.Text.Json.JsonSerializer.Serialize(tools);
             return new Dictionary<string, object>
             {
                 { "tools", _toolsForAdmin }
@@ -72,7 +71,7 @@ namespace Seed.CrossCuting
 
             };
 
-            var _toolsForSubscriber = JsonConvert.SerializeObject(tools);
+            var _toolsForSubscriber = System.Text.Json.JsonSerializer.Serialize(tools);
             return new Dictionary<string, object>
             {
                 { "tools", _toolsForSubscriber }
@@ -88,7 +87,7 @@ namespace Seed.CrossCuting
 
             };
 
-            var _toolsForSubscriber = JsonConvert.SerializeObject(tools);
+            var _toolsForSubscriber = System.Text.Json.JsonSerializer.Serialize(tools);
             return new Dictionary<string, object>
             {
                 { "tools", _toolsForSubscriber }

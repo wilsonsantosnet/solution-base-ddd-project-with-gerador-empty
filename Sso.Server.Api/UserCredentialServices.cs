@@ -13,7 +13,7 @@ namespace Sso.Server.Api
         public async Task<UserCredential> Auth(string userName, string password)
         {
 
-           
+
             //return await Task.Run(() =>
             //{
             //    var UserCredential = default(UserCredential);
@@ -28,7 +28,6 @@ namespace Sso.Server.Api
 
             //    return UserCredential;
             //});
-
 
             throw new InvalidCastException("Auth User Service not implemented, uncomment code above");
 

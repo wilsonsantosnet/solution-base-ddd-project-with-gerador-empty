@@ -1,6 +1,5 @@
 ﻿using Common.Domain;
 using IdentityModel.Client;
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
@@ -62,7 +61,7 @@ namespace Common.Api
                     AddHeaderInClientRequest(this.customHeaders.ToArray(), client);
 
                 var method = new HttpMethod("PATCH");
-                var json = JsonConvert.SerializeObject(model);
+                var json = System.Text.Json.JsonSerializer.Serialize(model);
                 var request = new HttpRequestMessage(method, new Uri(string.Format("{0}{1}", this.baseAddress, resource)))
                 {
                     Content = new StringContent(json, Encoding.UTF8, "application/json"),
@@ -74,7 +73,7 @@ namespace Common.Api
                 if (statusCode == HttpStatusCode.OK || statusCode == HttpStatusCode.Created)
                 {
                     var data = response.Content.ReadAsStringAsync().Result;
-                    var result = JsonConvert.DeserializeObject<TResult>(data);
+                    var result = System.Text.Json.JsonSerializer.Deserialize<TResult>(data);
                     return result;
                 }
 
@@ -94,14 +93,14 @@ namespace Common.Api
                 if (this.customHeaders.IsAny())
                     AddHeaderInClientRequest(this.customHeaders.ToArray(), client);
 
-                var json = JsonConvert.SerializeObject(model);
+                var json = System.Text.Json.JsonSerializer.Serialize(model);
                 var response = client.PostAsync(resource, new StringContent(json, Encoding.UTF8, "application/json")).Result;
                 statusCode = response.StatusCode;
 
                 if (statusCode == HttpStatusCode.OK || statusCode == HttpStatusCode.Created)
                 {
                     var data = response.Content.ReadAsStringAsync().Result;
-                    var result = JsonConvert.DeserializeObject<TResult>(data);
+                    var result = System.Text.Json.JsonSerializer.Deserialize<TResult>(data);
                     return result;
                 }
 
@@ -165,7 +164,7 @@ namespace Common.Api
                 if (statusCode == HttpStatusCode.OK)
                 {
                     var data = response.Content.ReadAsStringAsync().Result;
-                    var result = JsonConvert.DeserializeObject<TResult>(data);
+                    var result = System.Text.Json.JsonSerializer.Deserialize<TResult>(data);
                     return result;
                 }
             }
