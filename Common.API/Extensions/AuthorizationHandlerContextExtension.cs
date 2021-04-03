@@ -1,9 +1,8 @@
-﻿using Common.Domain.Model;
+using Common.Domain.Model;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Controllers;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Common.API.Extensions
 {
@@ -69,7 +68,7 @@ namespace Common.API.Extensions
 
         private static string DefineControllerName(AuthorizationHandlerContext source)
         {
-            return ((ControllerActionDescriptor)((ActionContext)source.Resource).ActionDescriptor).ControllerName;
+            return ((Microsoft.AspNetCore.Routing.RouteEndpoint)source.Resource).RoutePattern.RawText.Replace("/{id}","").Split("/").LastOrDefault();
         }
 
 

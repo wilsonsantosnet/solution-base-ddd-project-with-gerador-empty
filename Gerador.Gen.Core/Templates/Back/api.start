@@ -1,24 +1,21 @@
-﻿using Common.API;
+using AutoMapper;
+using Common.API;
+using Common.API.Extensions;
 using Common.Domain.Base;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Localization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using <#namespace#>.Application.Config;
+using <#namespace#>.CrossCuting;
 using <#namespace#>.Data.Context;
 using System.Globalization;
-using Microsoft.AspNetCore.Localization;
-using Common.API.Extensions;
-using System.Collections.Generic;
-using <#namespace#>.CrossCuting;
-using Swashbuckle.AspNetCore.Swagger;
-using Microsoft.Extensions.PlatformAbstractions;
-using System.IO;
 using System.Linq;
-using AutoMapper;
 using System.Text.Json;
 
 namespace <#namespace#>.Api
@@ -42,7 +39,7 @@ namespace <#namespace#>.Api
         public IConfigurationRoot Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
-        public void ConfigureServices(IServiceCollection services, IOptions<ConfigSettingsBase> configuration)
+        public void ConfigureServices(IServiceCollection services)
         {
 			//Camelcase para json
             services.AddControllers().AddJsonOptions(options =>
@@ -52,6 +49,7 @@ namespace <#namespace#>.Api
                 options.JsonSerializerOptions.WriteIndented = false;
                 options.JsonSerializerOptions.AllowTrailingCommas = true;
                 options.JsonSerializerOptions.Converters.Add(new StringJsonConverter());
+				options.JsonSerializerOptions.Converters.Add(new DatimeJsonConverter());
             });
 
             services.AddDbContext<DbContext<#contextName#>>(
@@ -65,6 +63,7 @@ namespace <#namespace#>.Api
                 options.InstanceName = "<#contextName#>";
             });
 
+            //Services Configuration
             services.Configure<ConfigSettingsBase>(Configuration.GetSection("ConfigSettings"));
 			services.Configure<ConfigStorageConnectionStringBase>(Configuration.GetSection("ConfigStorage"));
             services.AddSingleton<IConfiguration>(Configuration);
@@ -72,7 +71,9 @@ namespace <#namespace#>.Api
             {
                 RootPath = this._env.ContentRootPath
             });
-			services.AddLogging(loggingBuilder =>
+
+            //Logging
+            services.AddLogging(loggingBuilder =>
             {
                 loggingBuilder.AddConfiguration(Configuration.GetSection("Logging"));
                 loggingBuilder.AddConsole();
@@ -88,63 +89,41 @@ namespace <#namespace#>.Api
 				options.ApiName = "ssosa";
 			});
 
-
             // Add cross-origin resource sharing services Configurations
-            Cors.Enable(services, configuration.Value.ClientAuthorityEndPoint.ToArray());
-			services.AddAutoMapper(AutoMapperConfig<#contextName#>.RegisterMappings());
+            var configuration = new ConfigSettingsBase();
+            Configuration.GetSection("ConfigSettings").Bind(configuration);
+            Cors.Enable(services, configuration.ClientAuthorityEndPoint.ToArray());
+			
+            
+            //AutoMapper
+            services.AddAutoMapper(AutoMapperConfig<#namespace#>.RegisterMappings());
 
             // Add application services.
-            ConfigContainer<#contextName#>.Config(services);			
+            ConfigContainer<#namespace#>.Config(services);
 
-
-			//Policys
+            //Policys
             services.AddAuthorizationPolicy(ProfileCustom.Define);
-			// Configurando o serviço do Swagger
-            services.AddSwaggerGen(c =>
-            {
-                c.SwaggerDoc("v1",
-                    new Info
-                    {
-                        Title = "Target.Intranet",
-                        Version = "v1",
-                        Description = "Target.Intranet",
 
-                    });
 
-                var caminhoAplicacao = PlatformServices.Default.Application.ApplicationBasePath;
-                var nomeAplicacao = PlatformServices.Default.Application.ApplicationName;
-                var caminhoXmlDoc = Path.Combine(caminhoAplicacao, $"{nomeAplicacao}.xml");
-                c.IncludeXmlComments(caminhoXmlDoc);
-
-                c.AddSecurityDefinition("oauth2", new OAuth2Scheme
-                {
-                    Type = "oauth2",
-                    Flow = "implicit",
-                    AuthorizationUrl = "http://localhost:4000/connect/authorize",
-                    Scopes = new Dictionary<string, string>
-                    {
-                        { "ssosa", "ssosa" },
-                    }
-                });
-                c.OperationFilter<AuthorizeCheckOperationFilter>();
-            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILoggerFactory loggerFactory, IOptions<ConfigSettingsBase> configSettingsBase)
         {
 
+            //Errors
 			if (env.IsDevelopment())
                 app.UseDeveloperExceptionPage();
 
+            //Logging File
             loggerFactory.AddFile(Configuration.GetSection("Logging"));
 
 
+            //Cultue
             var supportedCultures = new[]
             {
                 new CultureInfo("pt-BR"),
             };
-
             app.UseRequestLocalization(new RequestLocalizationOptions
             {
                 DefaultRequestCulture = new RequestCulture(culture: "pt-BR", uiCulture: "pt-BR"),
@@ -153,20 +132,13 @@ namespace <#namespace#>.Api
                 // UI strings that we have localized.
                 SupportedUICultures = supportedCultures
             });
-        	
-			app.UseAuthentication();
-            app.AddTokenMiddlewareCustom();
-            app.UseMvc();
-			//Ativando middlewares para uso do Swagger
-            app.UseSwagger();
-            app.UseSwaggerUI(c =>
-            {
-                c.SwaggerEndpoint("/swagger/v1/swagger.json", "Target.Intranet");
-                c.OAuthClientId("swagger-dash");
-                c.OAuthAppName("swagger Dashboard");
 
-            });
-	    	app.UseCors("AllowStackOrigin");
+            app.UseCors("AllowStackOrigin");
+            app.UseAuthentication();
+            app.UseRouting();
+            app.UseAuthorization();
+            app.AddTokenMiddlewareCustom();
+            app.UseEndpoints(_ => _.MapControllers());
         }
 
     }
