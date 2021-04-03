@@ -42,10 +42,6 @@ namespace Seed.Gen
                 AlertNotFoundTable = true,
                 MakeToolsProfile = true,
 
-                Routes = new List<RouteConfig> {
-                    new RouteConfig{ Route = "{ path: 'sampledash',  canActivate: [AuthGuard], loadChildren: () => import('./main/sampledash/sampledash.module').then(m => m.SampleDashModule) }" }
-                },
-
                 TableInfo = new UniqueListTableInfo
                 {
                     new TableInfo().FromTable("Sample").MakeBack().MakeFront()
