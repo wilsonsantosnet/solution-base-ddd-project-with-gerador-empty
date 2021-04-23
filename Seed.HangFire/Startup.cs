@@ -96,15 +96,13 @@ namespace Seed.HangFire
                 app.UseDeveloperExceptionPage();
             }
 
-
             app.UseHangfireServer();
+            app.UseAuthentication();
             app.UseHangfireDashboard("/jobs", new DashboardOptions
             {
                 Authorization = new[] { new AuthoritionDashboardFilter() }
             });
 
-
-            app.UseAuthentication();
             app.UseRouting();
             app.UseAuthorization();
             app.UseStaticFiles();
