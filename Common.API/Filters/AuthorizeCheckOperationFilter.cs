@@ -1,7 +1,6 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Swashbuckle.AspNetCore.Swagger;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.SwaggerGen;
-using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 
@@ -9,8 +8,8 @@ namespace Common.API
 {
     public class AuthorizeCheckOperationFilter : IOperationFilter
     {
-       
-        public void Apply(Operation operation, OperationFilterContext context)
+
+        public void Apply(OpenApiOperation operation, OperationFilterContext context)
         {
 
             var hasAuthorize = context.MethodInfo.DeclaringType.GetTypeInfo()
@@ -20,13 +19,16 @@ namespace Common.API
 
             if (hasAuthorize)
             {
-                operation.Responses.Add("401", new Response { Description = "Unauthorized" });
-                operation.Responses.Add("403", new Response { Description = "Forbidden" });
-
-                operation.Security = new List<IDictionary<string, IEnumerable<string>>> {
-                    new Dictionary<string, IEnumerable<string>> {{"oauth2", new[] {"demo_api"}}}
+                operation.Responses.TryAdd("401", new OpenApiResponse { Description = "Unauthorized" });
+                operation.Responses.TryAdd("403", new OpenApiResponse { Description = "Forbidden" });
+                var basicSecurityScheme = new OpenApiSecurityScheme()
+                {
+                    Reference = new OpenApiReference { Type = ReferenceType.SecurityScheme, Id = "oauth2" },
                 };
-
+                operation.Security.Add(new OpenApiSecurityRequirement()
+                {
+                    [basicSecurityScheme] = new string[] { }
+                });
             }
         }
     }
