@@ -6,7 +6,7 @@ Esse Seed tem um gerenciador chamado gerador com ele após clonar o Seed podemos
 ###### Esses dois frameworks estão aqui no github segue os links Abaixo;
 
 1. [framework-angular6.0-CRUD](https://github.com/wilsonsantosnet/framework-angular6.0-CRUD)
-2. [framework-core2.0-common](https://github.com/wilsonsantosnet/framework-core2.0-common)
+2. [backend-framework-common](https://github.com/wilsonsantosnet/backend-framework-common)
 
 ###### Os Arquivos de Templates tambem estão  aqui;
 
