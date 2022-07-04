@@ -40,7 +40,7 @@ A estrutura é dividida em vários repositórios independentes que são gerencia
 1. Um esqueleto de projeto para toda a solução de front ao back
 
 
-#Repositorio Atuais
+## Repositorio Atuais
 
 1. [backend-template-DDD](https://github.com/wilsonsantosnet/backend-template-DDD)
 1. [template-gerador-front-coreui-angular6.0](https://github.com/wilsonsantosnet/template-gerador-front-coreui-angular6.0)
@@ -50,6 +50,7 @@ A estrutura é dividida em vários repositórios independentes que são gerencia
 1. [project-custom-layout-front-coreui-angular8.0](https://github.com/wilsonsantosnet/project-custom-layout-front-coreui-angular8.0)
 1. [solution-base-ddd-project-with-gerador-empty](https://github.com/wilsonsantosnet/solution-base-ddd-project-with-gerador-empty)
 
+## Mais informações
 
 ###### Caso esteja interessado em baixar o SEED e rodar o gerador siga as instruções do artigo:
 1. [Gerador de Código](https://medium.com/@wilsonsantos_66971/gerador-de-c%C3%B3digo-7e3c08981e43)
